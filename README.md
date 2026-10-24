@@ -1,18 +1,21 @@
 # Personalized email workflow
 
-This workflow uses Gemini to draft one personalized plain-text email per client
+This workflow uses Groq to draft one personalized plain-text email per client
 and Resend to deliver it. It can be run as a CLI or as a FastAPI service.
 
 ## Setup
 
 1. Copy `clients.example.json` to `clients.json` and replace the sample data.
-2. Set `GEMINI_API_KEY`, `RESEND_API_KEY`, and `EMAIL_FROM` in the environment.
-   The sender domain must be verified in Resend.
+2. Create a `.env` file with `GROQ_API_KEY`, `RESEND_API_KEY`, and
+   `EMAIL_FROM`. Optionally set `GROQ_MODEL`; it defaults to
+   `qwen/qwen3.8-27b`. The application loads this file automatically;
+   variables already set in the process environment take precedence. The
+   sender domain must be verified in Resend.
 3. Run a draft-only preview first:
 
 ```powershell
-$env:GEMINI_API_KEY = "..."
-python .\main.py --input .\clients.json --goal "Offer a 20-minute product consultation" --dry-run
+$env:GROQ_API_KEY = "..."
+python .\app.py --input .\clients.json --goal "Offer a 20-minute product consultation" --dry-run
 ```
 
 4. After reviewing the drafts, send them:
@@ -20,7 +23,7 @@ python .\main.py --input .\clients.json --goal "Offer a 20-minute product consul
 ```powershell
 $env:RESEND_API_KEY = "..."
 $env:EMAIL_FROM = "Your Name <hello@your-verified-domain.com>"
-python .\main.py --input .\clients.json --goal "Offer a 20-minute product consultation"
+python .\app.py --input .\clients.json --goal "Offer a 20-minute product consultation"
 ```
 
 The input JSON must be an array with `name` and `email`; `company` and `context`
@@ -33,7 +36,7 @@ Install the API dependencies and start the service:
 
 ```powershell
 python -m pip install -r .\requirements.txt
-uvicorn main:app --reload
+uvicorn app:app --reload
 ```
 
 Check that the service is running:
@@ -64,5 +67,5 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/campaigns `
 
 Set `dry_run` to `false` to send the generated emails. Sending requires both
 `RESEND_API_KEY` and `EMAIL_FROM`; draft requests only require
-`GEMINI_API_KEY`. Interactive API documentation is available at
+`GROQ_API_KEY`. Interactive API documentation is available at
 `http://127.0.0.1:8000/docs`.
