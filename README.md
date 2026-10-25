@@ -30,6 +30,18 @@ The input JSON must be an array with `name` and `email`; `company` and `context`
 are optional. The workflow stops on the first provider error rather than
 silently reporting a successful send.
 
+Browser requests from local frontends running on `localhost` or `127.0.0.1`
+are allowed automatically, regardless of their port. For a deployed frontend,
+set `FRONTEND_ORIGINS` on the backend to a comma-separated list of exact
+origins, including the scheme and port when applicable:
+
+```text
+FRONTEND_ORIGINS=https://your-frontend.example.com
+```
+
+Do not include a trailing slash in an origin. Restart or redeploy the backend
+after changing this variable.
+
 ## API
 
 Install the API dependencies and start the service:
