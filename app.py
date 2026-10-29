@@ -34,10 +34,13 @@ load_dotenv()
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "qwen/qwen3.8-27b")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 RESEND_URL = "https://api.resend.com/emails"
-FRONTEND_ORIGINS = [
+DEFAULT_FRONTEND_ORIGINS = [
+    "https://imaginative-lolly-b1c60c.netlify.app",
+]
+FRONTEND_ORIGINS = DEFAULT_FRONTEND_ORIGINS + [
     origin.strip()
     for origin in os.environ.get("FRONTEND_ORIGINS", "").split(",")
-    if origin.strip()
+    if origin.strip() and origin.strip() not in DEFAULT_FRONTEND_ORIGINS
 ]
 
 

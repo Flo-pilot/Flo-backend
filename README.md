@@ -32,8 +32,9 @@ silently reporting a successful send.
 
 Browser requests from local frontends running on `localhost` or `127.0.0.1`
 are allowed automatically, regardless of their port. For a deployed frontend,
-set `FRONTEND_ORIGINS` on the backend to a comma-separated list of exact
-origins, including the scheme and port when applicable:
+the configured Netlify frontend is allowed automatically. To allow additional
+deployed frontends, set `FRONTEND_ORIGINS` on the backend to a comma-separated
+list of exact origins, including the scheme and port when applicable:
 
 ```text
 FRONTEND_ORIGINS=https://your-frontend.example.com
