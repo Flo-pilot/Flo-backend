@@ -38,9 +38,10 @@ DEFAULT_FRONTEND_ORIGINS = [
     "https://imaginative-lolly-b1c60c.netlify.app",
 ]
 FRONTEND_ORIGINS = DEFAULT_FRONTEND_ORIGINS + [
-    origin.strip()
+    origin.strip().rstrip("/")
     for origin in os.environ.get("FRONTEND_ORIGINS", "").split(",")
-    if origin.strip() and origin.strip() not in DEFAULT_FRONTEND_ORIGINS
+    if origin.strip()
+    and origin.strip().rstrip("/") not in DEFAULT_FRONTEND_ORIGINS
 ]
 
 
@@ -102,7 +103,7 @@ app.add_middleware(
     allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["*"],
 )
 
 
